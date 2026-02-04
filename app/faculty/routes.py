@@ -276,4 +276,3 @@ def process_frame():
         print(f"Recognition Error: {e}")
 
     return {'success': True, 'new_students': newly_marked, 'detected_faces': []}
-
