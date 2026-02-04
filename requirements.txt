@@ -9,7 +9,7 @@ deepface
 numpy
 pandas
 openpyxl
-tf-keras
+tensorflow-cpu
 wtforms
 werkzeug
 mediapipe
