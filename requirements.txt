@@ -14,3 +14,4 @@ wtforms
 werkzeug
 mediapipe
 Flask-Migrate
+gunicorn
