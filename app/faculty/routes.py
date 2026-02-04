@@ -8,7 +8,7 @@ import base64
 import cv2
 import numpy as np
 import os
-from deepface import DeepFace
+# from deepface import DeepFace # Lazy load
 from flask import current_app
 
 @faculty.route("/faculty/dashboard")
@@ -89,6 +89,7 @@ def refresh_cache_manual(session_id):
 @faculty.route("/faculty/process_frame", methods=['POST'])
 @login_required
 def process_frame():
+    from deepface import DeepFace
     data = request.get_json()
     image_data = data['image']
     session_id = data['session_id']

@@ -1,6 +1,7 @@
 import os
 import base64
-from deepface import DeepFace
+# from deepface import DeepFace # Lazy load instead
+
 from flask import current_app
 
 import traceback
@@ -30,6 +31,7 @@ def save_base64_image(data_url, student_id):
 def generate_embedding(image_path):
     """Generates 2622-dim embedding using VGG-Face via DeepFace."""
     try:
+        from deepface import DeepFace
         print(f"DEBUG: Generating embedding for {image_path}")
         # returns list of dicts. We take the first face.
         # returns list of dicts. We take the first face.
