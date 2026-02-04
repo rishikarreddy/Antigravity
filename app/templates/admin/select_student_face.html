@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2>Biometric Enrollment</h2>
+        <p class="text-muted">Select a student to register or update their face data.</p>
+    </div>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Roll No</th>
+                        <th>Class</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td class="align-middle fw-bold">{{ student.user.name }}</td>
+                        <td class="align-middle">{{ student.roll_no }}</td>
+                        <td class="align-middle">{{ student.class_name }}</td>
+                        <td class="align-middle">
+                            {% if student.face_data %}
+                            <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i> Registered</span>
+                            {% else %}
+                            <span class="badge bg-secondary"><i class="fas fa-times-circle me-1"></i> Not
+                                Registered</span>
+                            {% endif %}
+                        </td>
+                        <td class="align-middle">
+                            <a href="{{ url_for('admin.register_face_capture', student_id=student.id) }}"
+                                class="btn btn-sm btn-primary">
+                                <i class="fas fa-camera"></i> Enroll Face
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

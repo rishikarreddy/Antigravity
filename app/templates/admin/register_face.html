@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-user-check me-2"></i>Register Face: {{ student.user.name }}</h4>
+            </div>
+            <div class="card-body text-center">
+
+                <div class="alert alert-info border-left-info">
+                    <i class="fas fa-info-circle me-1"></i> Ensure the student's face is clearly visible and well-lit.
+                </div>
+
+                <div class="position-relative d-inline-block mb-3 bg-dark rounded overflow-hidden"
+                    style="width: 100%; max-width: 640px; aspect-ratio: 4/3;">
+                    <video id="video" autoplay playsinline
+                        style="width: 100%; height: 100%; object-fit: cover;"></video>
+                    <canvas id="canvas" style="display:none;"></canvas>
+                    <img id="photo" alt="Captured Face"
+                        style="display:none; width: 100%; height: 100%; object-fit: cover;">
+
+                    <!-- Loading Overlay -->
+                    <div id="loading"
+                        class="position-absolute top-0 start-0 w-100 h-100 bg-dark d-none align-items-center justify-content-center"
+                        style="opacity: 0.8;">
+                        <div class="text-white">
+                            <div class="spinner-border mb-2" role="status"></div>
+                            <h5>Processing...</h5>
+                            <small>Generating Neural Embeddings</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="controls mt-3">
+                    <button id="start-camera" class="btn btn-outline-primary"><i class="fas fa-video me-1"></i> Start
+                        Camera</button>
+                    <button id="stop-camera" class="btn btn-outline-danger" style="display:none;"><i
+                            class="fas fa-video-slash me-1"></i> Stop Camera</button>
+                    <button id="capture-btn" class="btn btn-primary" disabled><i class="fas fa-camera me-1"></i> Capture
+                        Photo</button>
+                    <button id="retake-btn" class="btn btn-secondary" style="display:none;"><i
+                            class="fas fa-redo me-1"></i> Retake</button>
+                    <button id="save-btn" class="btn btn-success" style="display:none;"><i class="fas fa-save me-1"></i>
+                        Save Face Data</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden inputs -->
+<input type="hidden" id="student-id" value="{{ student.id }}">
+<input type="hidden" id="upload-url" value="{{ url_for('admin.upload_face') }}">
+<input type="hidden" id="csrf-token" value="{{ csrf_token() }}">
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/face_capture.js') }}"></script>
+{% endblock %}

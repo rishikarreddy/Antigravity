@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row fade-in">
+    <!-- Left: Settings Control -->
+    <div class="col-lg-5 mb-4">
+        <div class="card h-100 border-0 shadow-lg">
+            <div class="card-header bg-transparent border-0 pt-4 px-4">
+                <h4 class="fw-bold text-primary"><i class="fas fa-sliders-h me-2"></i>Preferences</h4>
+                <p class="text-muted small">Customize your experience</p>
+            </div>
+            <div class="card-body px-4">
+                <form method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                    <!-- Theme Toggle -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold d-block">Appearance</label>
+                        <div class="btn-group w-100" role="group">
+                            <button type="submit" name="theme" value="light"
+                                class="btn btn-outline-primary {{ 'active' if current_user.theme == 'light' else '' }}">
+                                <i class="fas fa-sun me-2"></i> Light
+                            </button>
+                            <button type="submit" name="theme" value="dark"
+                                class="btn btn-outline-primary {{ 'active' if current_user.theme == 'dark' else '' }}">
+                                <i class="fas fa-moon me-2"></i> Dark
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Profile Info (Read Only) -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">My Profile</label>
+                        <ul class="list-group list-group-flush rounded border">
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                <span>Name</span>
+                                <span class="fw-bold">{{ current_user.name }}</span>
+                            </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                <span>Role</span>
+                                <span class="badge bg-info text-dark">{{ current_user.role|upper }}</span>
+                            </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                                <span>Email</span>
+                                <span class="text-muted small">{{ current_user.email }}</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <a href="{{ url_for('auth.change_password') }}" class="btn btn-primary w-100">
+                        <i class="fas fa-lock me-2"></i> Change Password
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: About & Credits -->
+    <div class="col-lg-7 mb-4">
+        <div class="hero-header text-center position-relative overflow-hidden">
+            <div class="position-relative z-index-1">
+                <h1 class="display-4 fw-bold mb-3">Project Gravity</h1>
+                <p class="lead mb-4">The Next Generation of Attendance Intelligence</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <span class="badge bg-white text-primary px-3 py-2 rounded-pill shadow-sm"><i
+                            class="fas fa-code-branch me-1"></i> v2.5.0</span>
+                    <span class="badge bg-dark px-3 py-2 rounded-pill shadow-sm"><i class="fas fa-shield-alt me-1"></i>
+                        Secure</span>
+                </div>
+            </div>
+            <!-- Decorative Background Element -->
+            <i class="fas fa-atom position-absolute"
+                style="font-size: 15rem; opacity: 0.1; right: -2rem; bottom: -3rem;"></i>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <h5 class="fw-bold mb-3">About the Project</h5>
+                <p class="text-muted">
+                    Project Gravity is a state-of-the-art <strong>AI-Powered Face Recognition System</strong> built for
+                    the modern educational environment.
+                    Merging robust Flask architecture with advanced Deep Learning (DeepFace/VGG), it delivers seamless,
+                    secure, and instant attendance tracking.
+                </p>
+
+                <h6 class="fw-bold mt-4 mb-3">Technological Stack</h6>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge bg-secondary">Python 3.9</span>
+                    <span class="badge bg-success">Flask</span>
+                    <span class="badge bg-warning text-dark">TensorFlow</span>
+                    <span class="badge bg-info text-dark">DeepFace</span>
+                    <span class="badge bg-primary">SQLite</span>
+                    <span class="badge bg-danger">OpenCV</span>
+                </div>
+
+                <hr class="my-4">
+                <div class="text-center text-muted small">
+                    Created with <i class="fas fa-heart text-danger"></i> by <strong>Velanda Rishikar Reddy</strong>
+                    <br> &copy; 2024 All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,299 @@
+:root {
+    /* Modern Palette */
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --bg-light: #f8f9fc;
+    --text-light: #2d3748;
+    --card-light: #ffffff;
+    --nav-light: #ffffff;
+
+    /* Dark Mode Variables */
+    --bg-dark: #0f172a;
+    --text-dark: #e2e8f0;
+    --card-dark: #1e293b;
+    --nav-dark: #1e293b;
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+    font-family: 'Nunito', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode Overrides */
+body.dark-mode {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+}
+
+body.dark-mode .card {
+    background-color: var(--card-dark);
+    border: 1px solid var(--glass-border);
+    color: var(--text-dark);
+}
+
+body.dark-mode .card-header {
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--glass-border);
+    color: var(--text-dark);
+}
+
+body.dark-mode .text-muted {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .navbar,
+body.dark-mode .sidebar {
+    background: var(--nav-dark) !important;
+    border-right: 1px solid var(--glass-border);
+}
+
+body.dark-mode .table,
+body.dark-mode .table td,
+body.dark-mode .table th {
+    color: var(--text-dark);
+    border-color: var(--glass-border);
+}
+
+.faq-section .accordion-item {
+    border: none;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .faq-section .accordion-item {
+    background-color: var(--card-dark);
+    border: 1px solid var(--glass-border);
+}
+
+body.dark-mode .accordion-button {
+    background-color: var(--card-dark);
+    color: var(--text-dark);
+}
+
+body.dark-mode .accordion-button:not(.collapsed) {
+    background-color: rgba(102, 126, 234, 0.2);
+    color: white;
+}
+
+/* UI Components */
+.card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.btn {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-image: var(--primary-gradient);
+    border: none;
+}
+
+.btn-primary:hover {
+    filter: brightness(110%);
+    transform: translateY(-1px);
+}
+
+/* Interactive Sidebar */
+.sidebar {
+    min-height: 100vh;
+    background-image: var(--primary-gradient);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 8px 15px;
+    border-radius: 10px;
+    transition: all 0.3s;
+    font-weight: 600;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    backdrop-filter: blur(10px);
+    padding-left: 20px;
+    /* Slide effect */
+}
+
+/* Hero Section */
+.hero-section {
+    background: transparent;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+}
+
+.text-gradient {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.bg-light-gradient {
+    background: linear-gradient(135deg, #f8f9fc 0%, #eef2f7 100%);
+}
+
+/* Animations */
+.animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.delay-1 {
+    animation-delay: 0.2s;
+}
+
+.delay-2 {
+    animation-delay: 0.4s;
+}
+
+.delay-3 {
+    animation-delay: 0.6s;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Icons & Circles */
+.icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-box {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shadow-2xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.shadow-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Step Circles */
+.step-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Role Selector */
+.role-selector {
+    border: 1px solid #e2e8f0;
+}
+
+.btn-white {
+    background-color: white;
+    border: 1px solid transparent;
+}
+
+.btn-transparent {
+    background-color: transparent;
+    border: none;
+}
+
+/* Status Dot */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Utility */
+.ls-2 {
+    letter-spacing: 2px;
+}
+
+.divider {
+    height: 4px;
+    width: 60px;
+    border-radius: 2px;
+    margin-top: 10px;
+}
+
+/* Dark Mode Overrides for Landing Page */
+body.dark-mode .hero-section {
+    background: transparent;
+}
+
+body.dark-mode .bg-light-gradient,
+body.dark-mode .bg-light {
+    background: var(--bg-dark) !important;
+}
+
+body.dark-mode .role-selector {
+    background-color: var(--card-dark) !important;
+    border-color: var(--glass-border);
+}
+
+body.dark-mode .btn-white {
+    background-color: var(--primary-gradient);
+    color: white !important;
+}
+
+body.dark-mode .step-circle {
+    background-color: var(--card-dark) !important;
+    color: var(--text-dark) !important;
+}
+
+body.dark-mode .border-light {
+    border-color: var(--glass-border) !important;
+}

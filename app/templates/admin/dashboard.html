@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4">Admin Dashboard</h2>
+
+<!-- Stats Cards -->
+<div class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Students</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ student_count }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-user-graduate fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Faculty</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ faculty_count }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-chalkboard-teacher fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Biometric Data</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ face_count }} / {{ student_count }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-fingerprint fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Actions -->
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">User Management</h6>
+            </div>
+            <div class="card-body">
+                <p>Add new Students, Faculty, or Admins.</p>
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('admin.manage_users') }}" class="btn btn-primary">
+                        <i class="fas fa-users-cog me-1"></i> Manage Users (Edit/View)
+                    </a>
+                    <a href="{{ url_for('admin.register_user') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-plus me-1"></i> Register New User
+                    </a>
+                    <a href="{{ url_for('admin.password_requests') }}" class="btn btn-warning text-dark">
+                        <i class="fas fa-key me-1"></i> Password Requests
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Biometric Enrollment</h6>
+            </div>
+            <div class="card-body">
+                <p>Register face data for students to enable AI attendance.</p>
+                <a href="{{ url_for('admin.register_face_selection') }}" class="btn btn-warning text-dark">
+                    <i class="fas fa-camera me-1"></i> Register Faces
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Academic Management</h6>
+            </div>
+            <div class="card-body">
+                <p>Create subjects and assign them to faculty.</p>
+                <a href="{{ url_for('admin.create_subject') }}" class="btn btn-info">
+                    <i class="fas fa-book-open me-1"></i> Create Subject
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Health -->
+    <div class="col-lg-6">
+        <div class="card shadow mb-4 border-left-success">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">System Status</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i> OPERATIONAL</span>
+                        </div>
+                        <small class="text-muted">AI Engine: Online | DB: Connected</small>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-server fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Attendance Overview (Last 7 Days)</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-area" style="height: 300px;">
+                    <canvas id="myAreaChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('myAreaChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ chart_labels | tojson }},
+    datasets: [{
+        label: 'Attendance Count',
+        data: {{ chart_data | tojson }},
+        backgroundColor: 'rgba(78, 115, 223, 0.05)',
+        borderColor: 'rgba(78, 115, 223, 1)',
+        pointRadius: 3,
+        pointBackgroundColor: 'rgba(78, 115, 223, 1)',
+        pointBorderColor: 'rgba(78, 115, 223, 1)',
+        pointHoverRadius: 3,
+        pointHoverBackgroundColor: 'rgba(78, 115, 223, 1)',
+        pointHoverBorderColor: 'rgba(78, 115, 223, 1)',
+        pointHitRadius: 10,
+        pointBorderWidth: 2,
+        tension: 0.3,
+        fill: true
+            }]
+        },
+    options: {
+        maintainAspectRatio: false,
+            layout: {
+            padding: {
+                left: 10,
+                    right: 25,
+                        top: 25,
+                            bottom: 0
+            }
+        },
+        scales: {
+            x: {
+                grid: {
+                    display: false,
+                        drawBorder: false
+                },
+                ticks: {
+                    maxTicksLimit: 7
+                }
+            },
+            y: {
+                ticks: {
+                    maxTicksLimit: 5,
+                        padding: 10,
+                            callback: function(value, index, values) {
+                                return value;
+                            }
+                },
+                grid: {
+                    color: "rgb(234, 236, 244)",
+                        zeroLineColor: "rgb(234, 236, 244)",
+                            drawBorder: false,
+                                borderDash: [2],
+                                    zeroLineBorderDash: [2]
+                }
+            },
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+    });
+</script>
+{% endblock %}

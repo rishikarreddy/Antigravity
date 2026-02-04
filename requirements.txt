@@ -1,0 +1,16 @@
+flask
+flask-sqlalchemy
+flask-login
+flask-bcrypt
+flask-wtf
+email_validator
+opencv-python-headless
+deepface
+numpy
+pandas
+openpyxl
+tf-keras
+wtforms
+werkzeug
+mediapipe
+Flask-Migrate

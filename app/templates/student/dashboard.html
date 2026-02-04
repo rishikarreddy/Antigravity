@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4">Student Dashboard</h2>
+
+<div class="row mb-4">
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Overall Attendance</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ overall_percent }}%</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-chart-pie fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Subject-wise Breakdown</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Class</th>
+                        <th>Total Sessions</th>
+                        <th>Attended</th>
+                        <th>Percentage</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in attendance_data %}
+                    <tr>
+                        <td>{{ item.subject }}</td>
+                        <td>{{ item.class_name }}</td>
+                        <td>{{ item.total }}</td>
+                        <td>{{ item.attended }}</td>
+                        <td>
+                            <div class="progress mb-2">
+                                <div class="progress-bar bg-{{ 'success' if item.percent >= 75 else 'warning' if item.percent >= 60 else 'danger' }}"
+                                    role="progressbar" style="width: {{ item.percent }}%">
+                                    {{ item.percent }}%
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            {% if item.percent >= 75 %}
+                            <span class="badge bg-success">Good</span>
+                            {% elif item.percent >= 60 %}
+                            <span class="badge bg-warning text-dark">Warning</span>
+                            {% else %}
+                            <span class="badge bg-danger">Critical</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Attendance History (30 Days)</h6>
+    </div>
+    <div class="card-body">
+        <div class="chart-container" style="position: relative; height:300px;">
+            <canvas id="attendanceChart"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

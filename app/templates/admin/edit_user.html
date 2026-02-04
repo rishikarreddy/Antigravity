@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Edit User: {{ user.name }} ({{ user.role|title }})
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+
+                        <div class="mb-3">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control") }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control") }}
+                        </div>
+
+                        {% if user.role == 'student' %}
+                        <hr>
+                        <h6 class="text-secondary">Student Details</h6>
+                        <div class="mb-3">
+                            {{ form.roll_no.label(class="form-label") }}
+                            {{ form.roll_no(class="form-control") }}
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.class_name.label(class="form-label") }}
+                                {{ form.class_name(class="form-control") }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.student_dept.label(class="form-label") }}
+                                {{ form.student_dept(class="form-control") }}
+                            </div>
+                        </div>
+                        {% elif user.role == 'faculty' %}
+                        <hr>
+                        <h6 class="text-secondary">Faculty Details</h6>
+                        <div class="mb-3">
+                            {{ form.faculty_dept.label(class="form-label") }}
+                            {{ form.faculty_dept(class="form-control") }}
+                        </div>
+                        {% endif %}
+
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-primary") }}
+                            <a href="{{ url_for('admin.manage_users') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

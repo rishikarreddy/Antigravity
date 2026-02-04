@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg overflow-hidden">
+                <div class="card-header bg-primary text-white text-center py-5"
+                    style="background-image: var(--primary-gradient);">
+                    <h1 class="fw-bold mb-0">About Project Gravity</h1>
+                    <p class="lead mb-0 opacity-75">Innovating Attendance Management</p>
+                </div>
+                <div class="card-body p-5">
+                    <h3 class="fw-bold text-primary mb-4">Our Mission</h3>
+                    <p class="text-muted mb-5">
+                        To replace outdated manual attendance tracking with a <strong>secure, efficient, and touchless
+                        </strong>
+                        AI-powered solution. By leveraging computer vision, we ensure 100% accuracy and save valuable
+                        classroom time.
+                    </p>
+
+                    <h4 class="fw-bold mb-3">Key Features</h4>
+                    <div class="row g-4 mb-5">
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-robot fa-2x text-info"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="fw-bold h6">Face Recognition</h5>
+                                    <p class="small text-muted">Identify students in milliseconds using DeepFace.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-lock fa-2x text-warning"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="fw-bold h6">Data Privacy</h5>
+                                    <p class="small text-muted">Encrypted embeddings and role-based access.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-chart-pie fa-2x text-success"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="fw-bold h6">Live Analytics</h5>
+                                    <p class="small text-muted">Real-time dashboards for actionable insights.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-moon fa-2x text-dark"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="fw-bold h6">Dark Mode</h5>
+                                    <p class="small text-muted">Eye-friendly interface for late-night sessions.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="text-center mt-4">
+                        <p class="text-muted small">
+                            Developed by <strong>Velanda Rishikar Reddy</strong>
+                        </p>
+                        <a href="{{ url_for('main.home') }}" class="btn btn-outline-primary rounded-pill px-4">
+                            <i class="fas fa-arrow-left me-2"></i> Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4">Create New Subject</h2>
+            <div class="card shadow">
+                <div class="card-body">
+                    <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+
+                        <div class="mb-3">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control", placeholder="e.g. Data Analysis") }}
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.code.label(class="form-label") }}
+                                {{ form.code(class="form-control", placeholder="e.g. CS-301") }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.class_name.label(class="form-label") }}
+                                {{ form.class_name(class="form-control", placeholder="e.g. CS-A") }}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form.faculty_id.label(class="form-label") }}
+                            {{ form.faculty_id(class="form-select") }}
+                            <div class="form-text">Assign a faculty member to this subject.</div>
+                        </div>
+
+                        <div class="d-grid">
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

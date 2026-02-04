@@ -1,0 +1,472 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <!-- Hero Info -->
+            <div class="col-lg-7 text-center text-lg-start">
+                <span class="badge bg-soft-primary text-primary fw-bold mb-3 px-3 py-2 rounded-pill"><i
+                        class="fas fa-sparkles me-2"></i>AI-Powered Attendance</span>
+                <h1 class="display-3 fw-bold mb-3 animate-fade-up">Attendance <br><span
+                        class="text-gradient">Reimagined.</span></h1>
+                <p class="lead text-muted mb-4 animate-fade-up delay-1">
+                    Secure. Fast. Real-Time. Role-Based. <br>
+                    Experience the future of academic monitoring with <strong class="text-primary">Project
+                        Gravity</strong>.
+                </p>
+                <div
+                    class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start animate-fade-up delay-2">
+                    <div class="d-flex align-items-center">
+                        <div class="icon-circle bg-success text-white me-2"><i class="fas fa-bolt"></i></div>
+                        <small class="fw-bold text-muted">&lt;1s Recognition</small>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="icon-circle bg-info text-white me-2"><i class="fas fa-shield-alt"></i></div>
+                        <small class="fw-bold text-muted">Encrypted Data</small>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="icon-circle bg-warning text-white me-2"><i class="fas fa-chart-pie"></i></div>
+                        <small class="fw-bold text-muted">Smart Analytics</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Card -->
+            <div class="col-lg-5">
+                <div
+                    class="card shadow-2xl border-0 rounded-4 animate-fade-up delay-3 position-relative overflow-hidden">
+                    <div class="card-header bg-transparent border-0 text-center pt-4 pb-0">
+                        <!-- Theme Toggle Inside Card for Demo -->
+                        <div class="position-absolute top-0 end-0 p-3">
+                            <button id="themeToggleBtn"
+                                class="btn btn-sm btn-light rounded-circle shadow-sm w-30px h-30px p-0 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-moon text-secondary" style="font-size: 0.8rem;"></i>
+                            </button>
+                        </div>
+                        <h3 class="fw-bold">Welcome Back</h3>
+                        <p class="text-muted small">Login to access your dashboard</p>
+                    </div>
+                    <div class="card-body p-4 pt-2">
+                        <!-- Role Selector UI (Visual) -->
+                        <div class="role-selector d-flex justify-content-center bg-light rounded-pill p-1 mb-4">
+                            <button
+                                class="btn btn-sm btn-white flex-fill rounded-pill shadow-sm fw-bold text-primary active-role"
+                                onclick="selectRole(this)">Admin</button>
+                            <button class="btn btn-sm btn-transparent flex-fill rounded-pill fw-bold text-muted"
+                                onclick="selectRole(this)">Faculty</button>
+                            <button class="btn btn-sm btn-transparent flex-fill rounded-pill fw-bold text-muted"
+                                onclick="selectRole(this)">Student</button>
+                        </div>
+
+                        <form method="POST" action="">
+                            {{ form.hidden_tag() }}
+                            <div class="mb-3">
+                                <div class="form-floating">
+                                    {% if form.email.errors %}
+                                    {{ form.email(class="form-control is-invalid", placeholder="name@example.com") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.email.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ form.email(class="form-control", placeholder="name@example.com") }}
+                                    {% endif %}
+                                    <label for="email">Email Address</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-floating">
+                                    {% if form.password.errors %}
+                                    {{ form.password(class="form-control is-invalid", placeholder="Password") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.password.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ form.password(class="form-control", placeholder="Password") }}
+                                    {% endif %}
+                                    <label for="password">Password</label>
+                                </div>
+                                <!-- Security Icons -->
+                                <div class="d-flex justify-content-end gap-2 mt-1">
+                                    <i class="fas fa-lock text-success small" title="Encrypted"
+                                        style="font-size: 0.7rem;"></i>
+                                    <i class="fas fa-shield-alt text-success small" title="Secure"
+                                        style="font-size: 0.7rem;"></i>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="form-check">
+                                    {{ form.remember(class="form-check-input") }}
+                                    {{ form.remember.label(class="form-check-label small") }}
+                                </div>
+                                <a href="{{ url_for('auth.forgot_password') }}"
+                                    class="small text-decoration-none">Forgot Password?</a>
+                            </div>
+
+                            <div class="d-grid">
+                                {{ form.submit(class="btn btn-primary btn-lg fw-bold shadow-sm") }}
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-3">
+                            <small class="text-muted" style="font-size: 0.75rem;">Last login: {{ quote_date }} from
+                                192.168.1.5</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section id="features" class="py-5 bg-light-gradient">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h6 class="text-primary fw-bold text-uppercase ls-2">Features</h6>
+            <h2 class="fw-bold">Why Choose Gravity?</h2>
+            <div class="divider mx-auto bg-primary"></div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Feature 1 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-hover p-3 text-center">
+                    <div class="card-body">
+                        <div class="icon-box bg-soft-primary text-primary mx-auto mb-3">
+                            <i class="fas fa-brain fa-2x"></i>
+                        </div>
+                        <h5 class="fw-bold">AI Face Recognition</h5>
+                        <p class="text-muted small">Deep learning based high accuracy verification that works in
+                            real-time.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Feature 2 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-hover p-3 text-center">
+                    <div class="card-body">
+                        <div class="icon-box bg-soft-success text-success mx-auto mb-3">
+                            <i class="fas fa-chart-bar fa-2x"></i>
+                        </div>
+                        <h5 class="fw-bold">Smart Dashboard</h5>
+                        <p class="text-muted small">Daily attendance stats, exportable CSV reports, and class-wise
+                            insights.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Feature 3 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-hover p-3 text-center">
+                    <div class="card-body">
+                        <div class="icon-box bg-soft-danger text-danger mx-auto mb-3">
+                            <i class="fas fa-lock fa-2x"></i>
+                        </div>
+                        <h5 class="fw-bold">Secure & Reliable</h5>
+                        <p class="text-muted small">Role-based access control with privacy-first architecture.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Feature 4 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-hover p-3 text-center">
+                    <div class="card-body">
+                        <div class="icon-box bg-soft-info text-info mx-auto mb-3">
+                            <i class="fas fa-server fa-2x"></i>
+                        </div>
+                        <h5 class="fw-bold">System Monitoring</h5>
+                        <p class="text-muted small">Live health checks for Camera, Model status, and Database sync.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h6 class="text-primary fw-bold text-uppercase ls-2">Workflow</h6>
+            <h2 class="fw-bold">How It Works</h2>
+        </div>
+
+        <div class="row justify-content-center position-relative">
+            <!-- Connecting Line (Desktop) -->
+            <div class="d-none d-lg-block position-absolute top-50 start-0 w-100 translate-middle-y border-top border-2 border-light"
+                style="z-index: -1;"></div>
+
+            <!-- Step 1 -->
+            <div class="col-lg-2 col-md-4 text-center mb-4">
+                <div class="step-circle bg-white shadow fw-bold text-primary mx-auto mb-3">1</div>
+                <h6 class="fw-bold">Register</h6>
+                <p class="small text-muted">Admin registers student faces</p>
+            </div>
+            <!-- Step 2 -->
+            <div class="col-lg-2 col-md-4 text-center mb-4">
+                <div class="step-circle bg-white shadow fw-bold text-primary mx-auto mb-3">2</div>
+                <h6 class="fw-bold">Start Camera</h6>
+                <p class="small text-muted">Faculty starts live session</p>
+            </div>
+            <!-- Step 3 -->
+            <div class="col-lg-2 col-md-4 text-center mb-4">
+                <div class="step-circle bg-white shadow fw-bold text-primary mx-auto mb-3">3</div>
+                <h6 class="fw-bold">Detect</h6>
+                <p class="small text-muted">AI detects & verifies faces</p>
+            </div>
+            <!-- Step 4 -->
+            <div class="col-lg-2 col-md-4 text-center mb-4">
+                <div class="step-circle bg-white shadow fw-bold text-primary mx-auto mb-3">4</div>
+                <h6 class="fw-bold">Mark</h6>
+                <p class="small text-muted">Attendance marked automatically</p>
+            </div>
+            <!-- Step 5 -->
+            <div class="col-lg-2 col-md-4 text-center mb-4">
+                <div class="step-circle bg-white shadow fw-bold text-primary mx-auto mb-3">5</div>
+                <h6 class="fw-bold">Report</h6>
+                <p class="small text-muted">Reports generated instantly</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ROLES & TRUST -->
+<section id="roles" class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h2 class="fw-bold mb-3">Role-Based Access Control</h2>
+                <div class="d-flex align-items-start mb-3">
+                    <i class="fas fa-check-circle text-success mt-1 me-3"></i>
+                    <div>
+                        <h6 class="fw-bold mb-0">Admin</h6>
+                        <p class="text-muted small">Register faces, manage users, view full reports.</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-start mb-3">
+                    <i class="fas fa-check-circle text-success mt-1 me-3"></i>
+                    <div>
+                        <h6 class="fw-bold mb-0">Faculty</h6>
+                        <p class="text-muted small">Start attendance, view class stats, export reports.</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-start">
+                    <i class="fas fa-check-circle text-success mt-1 me-3"></i>
+                    <div>
+                        <h6 class="fw-bold mb-0">Student</h6>
+                        <p class="text-muted small">View attendance %, download reports, history.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <!-- Live System Status Panel -->
+                <div class="card border-0 shadow-lg bg-dark text-white rounded-3">
+                    <div class="card-header bg-transparent border-secondary py-3">
+                        <h5 class="fw-bold mb-0"><i class="fas fa-network-wired me-2"></i>Live System Status</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <span class="status-dot bg-success me-2"></span>
+                                    <small>Camera: Connected</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <span class="status-dot bg-success me-2"></span>
+                                    <small>AI Model: Loaded</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <span class="status-dot bg-success me-2"></span>
+                                    <small>Server: Running</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <span class="status-dot bg-success me-2"></span>
+                                    <small>Database: Connected</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="row text-center mt-5">
+            <div class="col-6 col-md-3 mb-3">
+                <div class="p-3 bg-white rounded shadow-sm">
+                    <h3 class="fw-bold text-primary mb-0">100+</h3>
+                    <small class="text-muted">Students Tested</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-3">
+                <div class="p-3 bg-white rounded shadow-sm">
+                    <h3 class="fw-bold text-success mb-0">97%</h3>
+                    <small class="text-muted">Face Accuracy</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-3">
+                <div class="p-3 bg-white rounded shadow-sm">
+                    <h3 class="fw-bold text-info mb-0">&lt;1s</h3>
+                    <small class="text-muted">Latency</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 mb-3">
+                <div class="p-3 bg-white rounded shadow-sm">
+                    <h3 class="fw-bold text-warning mb-0">24/7</h3>
+                    <small class="text-muted">Availability</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ SECTION -->
+<section id="faq" class="py-5">
+    <div class="container">
+        <h5 class="fw-bold text-center mb-4 text-muted">Frequently Asked Questions</h5>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="loginFaq">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseOne">
+                                <i class="fas fa-bullseye me-2 text-primary"></i> How accurate is face recognition?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#loginFaq">
+                            <div class="accordion-body small text-muted">
+                                We use DeepFace with VGG-Face backend which provides state-of-the-art accuracy up to 97%
+                                under controlled lighting.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- More FAQs -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo">
+                                <i class="fas fa-copy me-2 text-warning"></i> Can attendance be marked twice?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#loginFaq">
+                            <div class="accordion-body small text-muted">
+                                No. The system has a cooldown period per session. Once marked 'Present', duplicates are
+                                ignored for that session.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseThree">
+                                <i class="fas fa-wifi me-2 text-danger"></i> What if the camera fails?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#loginFaq">
+                            <div class="accordion-body small text-muted">
+                                Faculty can manually override attendance or use the backup manual entry mode in the
+                                dashboard.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact" class="bg-dark text-white py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <h5 class="fw-bold text-primary mb-3">Project Gravity</h5>
+                <p class="small text-muted mb-0">
+                    A secure authentication gateway and informational dashboard that communicates system intelligence,
+                    reliability, and transparency.
+                </p>
+            </div>
+            <div class="col-md-4">
+                <h6 class="fw-bold mb-3">Tech Stack</h6>
+                <ul class="list-unstyled small text-muted">
+                    <li><i class="fab fa-python me-2"></i>Python & Flask</li>
+                    <li><i class="fas fa-camera me-2"></i>OpenCV & DeepFace</li>
+                    <li><i class="fab fa-html5 me-2"></i>HTML5, CSS3, JS</li>
+                    <li><i class="fas fa-database me-2"></i>SQLite / SQLAlchemy</li>
+                </ul>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <h6 class="fw-bold mb-3">Developed By</h6>
+                <p class="small text-white mb-0">Rishi</p>
+                <p class="small text-muted">Final Year Project – 2026</p>
+                <div class="mt-3">
+                    <a href="https://github.com/rishikarreddy" target="_blank" class="text-white me-3"><i
+                            class="fab fa-github"></i></a>
+                    <a href="#" class="text-white"><i class="fas fa-file-alt"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="border-top border-secondary mt-4 pt-4 text-center small text-muted">
+            &copy; 2026 Project Gravity. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+<script>
+    function selectRole(btn) {
+        document.querySelectorAll('.role-selector button').forEach(b => {
+            b.classList.remove('btn-white', 'text-primary', 'shadow-sm', 'active-role');
+            b.classList.add('btn-transparent', 'text-muted');
+        });
+        btn.classList.remove('btn-transparent', 'text-muted');
+        btn.classList.add('btn-white', 'text-primary', 'shadow-sm', 'active-role');
+    }
+
+    // Theme Toggle Logic
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleBtn = document.getElementById('themeToggleBtn');
+        const icon = toggleBtn.querySelector('i');
+        const body = document.body;
+
+        // Check LocalStorage
+        const savedTheme = localStorage.getItem('gravity_theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            icon.classList.replace('fa-moon', 'fa-sun');
+            icon.classList.remove('text-secondary');
+            icon.classList.add('text-warning');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+
+            if (isDark) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                icon.classList.remove('text-secondary');
+                icon.classList.add('text-warning');
+                localStorage.setItem('gravity_theme', 'dark');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                icon.classList.remove('text-warning');
+                icon.classList.add('text-secondary');
+                localStorage.setItem('gravity_theme', 'light');
+            }
+        });
+    });
+</script>
+{% endblock %}

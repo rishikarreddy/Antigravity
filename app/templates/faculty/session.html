@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    :root {
+        --neon-green: #00ff88;
+        --neon-red: #ff3366;
+        --dark-bg: #0d1117;
+        --glass: rgba(22, 27, 34, 0.8);
+    }
+
+    .security-dashboard {
+        background-color: #000;
+        color: #e6edf3;
+        font-family: 'Consolas', 'Monaco', monospace;
+        min-height: 85vh;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #30363d;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .live-feed-container {
+        position: relative;
+        border: 2px solid #30363d;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #000;
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+    }
+
+    #video,
+    #canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Make video visible but canvas on top transparent */
+    #video {
+        z-index: 1;
+    }
+
+    #canvas {
+        z-index: 2;
+    }
+
+    .terminal-window {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        height: 400px;
+        overflow-y: auto;
+        padding: 10px;
+        font-size: 0.9em;
+    }
+
+    .log-entry {
+        border-bottom: 1px solid #21262d;
+        padding: 4px 0;
+        animation: fadeIn 0.3s ease-in;
+    }
+
+    .log-success {
+        color: var(--neon-green);
+    }
+
+    .log-error {
+        color: var(--neon-red);
+    }
+
+    .stat-card {
+        background: #161b22;
+        border: 1px solid #30363d;
+        padding: 15px;
+        border-radius: 6px;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .stat-value {
+        font-size: 2em;
+        font-weight: bold;
+        color: var(--neon-green);
+    }
+
+    /* Blinking Live Indicator */
+    .live-dot {
+        height: 10px;
+        width: 10px;
+        background-color: var(--neon-red);
+        border-radius: 50%;
+        display: inline-block;
+        animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+        0% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="security-dashboard">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-2">
+        <h4 class="m-0"><span class="live-dot me-2"></span>LIVE MONITORING: {{ session.subject.name }}</h4>
+        <div>
+            <span class="text-muted me-3">Session ID: #{{ session.id }}</span>
+            <a href="{{ url_for('faculty.end_session', session_id=session.id) }}" class="btn btn-danger btn-sm">
+                <i class="fas fa-power-off me-1"></i> TERMINATE SESSION
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Center: Video Feed -->
+        <div class="col-lg-8 mb-4">
+            <div class="live-feed-container" style="padding-top: 56.25%;"> <!-- 16:9 Aspect Ratio -->
+                <video id="video" autoplay playsinline muted></video>
+                <canvas id="canvas"></canvas>
+            </div>
+            <div class="mt-2 text-center text-muted small">
+                <i class="fas fa-video me-1"></i> Camera Active | AI Engine Online
+            </div>
+        </div>
+
+        <!-- Right: Stats & Logs -->
+        <div class="col-lg-4">
+            <!-- Stats Row -->
+            <div class="row mb-3">
+                <div class="col-6">
+                    <div class="stat-card">
+                        <div class="text-secondary small text-uppercase">Present</div>
+                        <div class="stat-value" id="present-count">{{ session.attendance_records|length }}</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="stat-card">
+                        <div class="text-secondary small text-uppercase">Total Class</div>
+                        <!-- Simple total based on subject if possible, else placeholder -->
+                        <div class="stat-value text-white"> -- </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terminal Log -->
+            <h6 class="text-muted text-uppercase small mb-2"><i class="fas fa-terminal me-1"></i> System Event Log</h6>
+            <div class="terminal-window" id="log-window">
+                <div class="log-entry text-muted">[SYSTEM] Initializing Camera Feed...</div>
+                <div class="log-entry text-muted">[SYSTEM] Loading Face Embeddings...</div>
+                <div class="log-entry text-muted">[SYSTEM] Connecting to Neural Network...</div>
+                <div class="log-entry log-success">[SYSTEM] READY. Waiting for targets.</div>
+
+                {% for record in session.attendance_records %}
+                <div class="log-entry text-muted">
+                    <span class="text-success">[Synced]</span> {{ record.student.user.name }} marked present.
+                </div>
+                {% endfor %}
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
+                <h6 class="mb-0 text-muted text-uppercase small"><i class="fas fa-cogs me-1"></i> Control Panel</h6>
+                <button id="refresh-db-btn" class="btn btn-outline-warning btn-sm" title="Reload Student Faces">
+                    <i class="fas fa-sync-alt me-1"></i> Refresh DB
+                </button>
+            </div>
+            <div class="d-grid gap-2">
+                <!-- Additional controls can go here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden Configuration for JS -->
+<input type="hidden" id="session-id" value="{{ session.id }}">
+<input type="hidden" id="csrf-token" value="{{ csrf_token() }}">
+
+<!-- Load JS -->
+<script src="{{ url_for('static', filename='js/live_attendance.js') }}"></script>
+{% endblock %}

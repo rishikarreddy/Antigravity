@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row g-4 mb-4">
+
+    <!-- Guest View (Login Prompt) -->
+    {% if not current_user.is_authenticated %}
+    <div class="col-12 text-center py-5">
+        <h1 class="display-3 fw-bold mb-3">Welcome to <span class="text-primary">Gravity</span></h1>
+        <p class="lead mb-4">The Next-Generation AI Attendance System</p>
+        <div class="row justify-content-center g-4">
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <i class="fas fa-camera fa-3x text-primary mb-3"></i>
+                        <h5>Face Recognition</h5>
+                        <p class="small text-muted">99.8% Accuracy with DeepFace</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <i class="fas fa-shield-alt fa-3x text-success mb-3"></i>
+                        <h5>Anti-Spoofing</h5>
+                        <p class="small text-muted">Liveness Detection Enabled</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <i class="fas fa-chart-line fa-3x text-info mb-3"></i>
+                        <h5>Real-time Analytics</h5>
+                        <p class="small text-muted">Instant Dashboard Updates</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-5">
+            <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg px-5 shadow-lg">Login to Dashboard</a>
+        </div>
+    </div>
+    {% else %}
+
+    <!-- ADMIN & FACULTY DASHBOARD VIEW -->
+    {% if current_user.role in ['admin', 'faculty'] %}
+
+    <!-- 1. AI Confidence Meter -->
+    <div class="col-xl-3 col-md-6">
+        <div class="card border-0 shadow-sm h-100 gradient-card-1 text-white">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-uppercase small fw-bold mb-1">AI Confidence</div>
+                        <div class="h2 mb-0 fw-bold" id="confidence-val">--%</div>
+                        <div class="small mt-1"><i class="fas fa-clock me-1"></i> <span id="rec-time">--s</span></div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-brain fa-2x opacity-50"></i>
+                    </div>
+                </div>
+                <div class="progress mt-3 bg-white bg-opacity-25" style="height: 6px;">
+                    <div class="progress-bar bg-white" id="confidence-meter-bar" role="progressbar" style="width: 0%">
+                    </div>
+                </div>
+                <div id="spoof-indicator" class="mt-2 badge bg-danger d-none">
+                    <i class="fas fa-exclamation-triangle"></i> Spoof Detected
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Unknown Face Detection -->
+    <div class="col-xl-3 col-md-6">
+        <div class="card border-0 shadow-sm h-100 border-start border-danger border-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-xs fw-bold text-danger text-uppercase mb-1">Unknown Faces (Today)</div>
+                        <div class="h3 mb-0 fw-bold text-gray-800" id="unknown-count">0</div>
+                        <div class="small text-muted mt-1" id="unknown-last-seen">No detections yet</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-user-secret fa-2x text-danger opacity-25"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Smart Attendance Timer (Conceptual) -->
+    <div class="col-xl-3 col-md-6">
+        <div class="card border-0 shadow-sm h-100 border-start border-warning border-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-xs fw-bold text-warning text-uppercase mb-1">Active Session</div>
+                        <div class="h5 mb-0 fw-bold text-gray-800">CSA-Lab-2</div>
+                        <div class="small text-success mt-1"><i class="fas fa-hourglass-half"></i> In Progress</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-stopwatch fa-2x text-warning opacity-25"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Location Verification (Static/Mock) -->
+    <div class="col-xl-3 col-md-6">
+        <div class="card border-0 shadow-sm h-100 border-start border-info border-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-xs fw-bold text-info text-uppercase mb-1">Location Lock</div>
+                        <div class="h5 mb-0 fw-bold text-gray-800">Campus Net</div>
+                        <div class="small text-success mt-1"><i class="fas fa-check-circle"></i> IP Verified</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-network-wired fa-2x text-info opacity-25"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. System Health Monitor -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white py-3">
+                <h6 class="m-0 fw-bold text-primary"><i class="fas fa-server me-2"></i>System Health</h6>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless table-sm mb-0">
+                    <tbody>
+                        <tr>
+                            <td>Camera</td>
+                            <td class="text-end"><span class="badge bg-secondary" id="cam-status">Checking...</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Model (DeepFace)</td>
+                            <td class="text-end"><span class="badge bg-secondary" id="model-status">Checking...</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Database</td>
+                            <td class="text-end"><span class="badge bg-secondary" id="db-status">Checking...</span></td>
+                        </tr>
+                        <tr>
+                            <td>Server</td>
+                            <td class="text-end"><span class="badge bg-success">Online</span></td>
+                        </tr>
+                        <tr>
+                            <td>Anti-Spoofing</td>
+                            <td class="text-end"><span class="badge bg-success">Active</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. Face Dataset Insights (Admin Only) -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white py-3">
+                <h6 class="m-0 fw-bold text-primary"><i class="fas fa-database me-2"></i>Dataset Insights</h6>
+            </div>
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <span class="display-4 fw-bold text-primary">124</span>
+                    <div class="text-muted small">Registered Faces</div>
+                </div>
+                <div class="progress mb-3" style="height: 10px;">
+                    <div class="progress-bar bg-success" style="width: 85%"></div>
+                    <div class="progress-bar bg-warning" style="width: 15%"></div>
+                </div>
+                <div class="d-flex justify-content-between small text-muted">
+                    <span><i class="fas fa-circle text-success small me-1"></i>Optimized</span>
+                    <span><i class="fas fa-circle text-warning small me-1"></i>New</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. Predictive Insight -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm border-0 h-100 bg-light">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                <i class="fas fa-crystal-ball fa-3x text-purple mb-3" style="color: #6f42c1;"></i>
+                <h5 class="fw-bold">Predictive Insight</h5>
+                <p class="text-muted mb-0">"Based on historical data, expected attendance for tomorrow is <span
+                        class="fw-bold text-success">88%</span>."</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Daily Summary -->
+    <div class="col-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 fw-bold text-primary">Daily Summary</h6>
+                <span class="badge bg-primary rounded-pill">{{ quote_date }}</span>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <h4 class="fw-bold" id="total-classes">0</h4>
+                        <div class="text-muted small">Classes Conducted</div>
+                    </div>
+                    <div class="col-md-3 border-start">
+                        <h4 class="fw-bold text-success" id="avg-attendance">--%</h4>
+                        <div class="text-muted small">Avg Attendance</div>
+                    </div>
+                    <div class="col-md-3 border-start">
+                        <h4 class="fw-bold text-danger">Data Structures</h4>
+                        <div class="text-muted small">Most Absent Subject</div>
+                    </div>
+                    <div class="col-md-3 border-start">
+                        <h4 class="fw-bold text-warning">0</h4>
+                        <div class="text-muted small">Late Arrivals</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+    <!-- END ADMIN/FACULTY VIEW -->
+
+    <!-- STUDENT DASHBOARD WIDGETS (Only specific extra ones) -->
+    {% if current_user.role == 'student' %}
+    <div class="col-12">
+        <div class="alert alert-success d-flex align-items-center shadow-sm" role="alert">
+            <i class="fas fa-trophy fa-2x me-3 text-warning"></i>
+            <div>
+                <h4 class="alert-heading mb-0">Top Attendance!</h4>
+                <p class="mb-0">You are in the top 5% of students this month. Keep it up!</p>
+            </div>
+        </div>
+    </div>
+    <!-- Attendance Graph -->
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Attendance Trends (Last 30 Days)</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-area">
+                    <canvas id="attendanceChart" style="height: 300px; width: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card shadow mb-4 h-100">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Quick Stats</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Total Presents
+                        <span class="badge bg-success rounded-pill">18</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Total Absents
+                        <span class="badge bg-danger rounded-pill">2</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Late
+                        <span class="badge bg-warning rounded-pill">1</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+</div>
+
+<style>
+    .gradient-card-1 {
+        background: linear-gradient(45deg, #4e73df, #224abe);
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Dashboard Logic -->
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
